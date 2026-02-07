@@ -21,7 +21,8 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 28101
-          timeout: 1200s
+          timeout: 1800s
+          command_timeout: 1800s
           script: |
             cd /opt/portfolio-rifki
 
@@ -32,7 +33,7 @@ jobs:
             git branch -vv
 
             # Build ulang image Docker
-            docker build --no-cache -t portfolio_rifki .
+            docker build -t portfolio_rifki .
 
             # Stop & remove container lama kalau ada
             docker stop portfolio_rifki-server || true
