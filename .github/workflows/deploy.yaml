@@ -20,11 +20,11 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: 28101
+          port: ${{secrets.VPS_PORT}}
           timeout: 1800s
           command_timeout: 1800s
           script: |
-            cd /opt/portfolio-rifki
+            cd /opt/projects/portfolio-rifki
 
             # Ambil kode terbaru
             git pull origin DEV
