@@ -7,7 +7,7 @@ import { FaLocationArrow } from 'react-icons/fa';
 
 const Hero = () => {
     return (
-        <div className='relative pb-20 pt-[18rem] overflow-hidden'>
+        <div className='relative pb-20 pt-[8rem] overflow-hidden'>
             <div>
 
                 <Spotlight className='-tp-40 -left-10 md:-left-32 md:-top-20 h-screen' fill='white' />
@@ -32,7 +32,7 @@ const Hero = () => {
                         </h2>
                     <TextGenerateEffect className='text-center text-[40px] md:text-5xl lg: text-6xl' words='Backend Engineer focused on clean APIs, secure auth, and scalable architecture.'/>
 
-                    <p className='text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl'>Hi, I&apos; a Backend Developer, love hack so much</p>
+                    <p className='text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl'>Hi, I&apos;m Rifki, a Backend Developer & Automation Enthusiast</p>
 
                     <a href="#about">
                         <MagicButton title='Show my work' icon={<FaLocationArrow/>} position='right' otherClasses='' />

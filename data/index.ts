@@ -8,9 +8,9 @@ export const navItems = [
 export const gridItems = [
   {
     id: 1,
-    title: "I prioritize collaboration and clear communication.",
+    title: "I prioritize clean architecture and system automation.",
     description:
-      "Backend Engineer focused on building reliable APIs, authentication, database design, and third-party integrations.",
+      "3rd-year Software Engineering student focused on building robust APIs, secure auth, and automated bots to optimize operational workflows.",
     className: "lg:col-span-3 md:col-span-6 md:row-span-4 lg:min-h-[60vh]",
     imgClassName: "w-full h-full object-cover object-center",
     titleClassName: "justify-end",
