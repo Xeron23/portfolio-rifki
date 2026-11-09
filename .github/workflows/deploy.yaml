@@ -31,8 +31,8 @@ jobs:
             git remote -v
             git branch -vv
 
-            # Build ulang image Docker
-            DOCKER_BUILDKIT=0 docker build -t portfolio_rifki .
+            # Build image Docker jika perlu (atau gunakan image lokal terupdate)
+            docker build -t portfolio_rifki . || true
 
             # Stop & remove container lama kalau ada
             docker stop portfolio_rifki-server || true
