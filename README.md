@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rifki Anandita — Studio Redesign
 
-## Getting Started
+Redesign menyeluruh dari **hasil redesign DEV sebelumnya**, dengan konten dan tautan proyek asli tetap dipertahankan. Tidak ada push, perubahan branch remote, atau deployment dalam paket ini.
 
-First, run the development server:
+## Menjalankan
+
+Gunakan Node.js **22.18+** atau Node.js 24 LTS.
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka `http://localhost:4003`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm test          # 9 tes logika kartu
+npm run typecheck
+npm run lint
+npm run build
+npm start         # production, port 4003
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Script dev menerjemahkan flag `--host` dari preview tools menjadi `--hostname` milik Next.js. Tanpa flag tambahan, tetap memakai port 4003.
 
-## Learn More
+## Arah visual dan interaksi
 
-To learn more about Next.js, take a look at the following resources:
+- Palet ivory/paper, charcoal hangat, terracotta, dan olive. Font disertakan lokal sehingga tidak memerlukan Google Fonts.
+- Karya ditampilkan sebagai **deck kartu bertumpuk**, satu kartu aktif. Geser horizontal, gunakan tombol sebelumnya/berikutnya, pilih indikator, atau fokuskan deck lalu gunakan tombol panah keyboard.
+- Detail proyek memakai native dialog: fokus terkurung di dialog, Escape menutup, dan fokus kembali ke pemicu.
+- Hero memakai render Blender kustom API → server → database. Gerakan default sangat ringan. Viewer GLB hanya dimuat setelah tombol “Explore in 3D” ditekan.
+- Perangkat tanpa WebGL2 tetap mendapat render Blender dengan penjelasan. `prefers-reduced-motion` mematikan gerakan dekoratif.
+- Kontak memakai email asli dan tautan GitHub/LinkedIn asli. Tombol copy hanya mengaku berhasil sesudah operasi clipboard sukses.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## File utama
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `components/studio/StudioPortfolio.tsx`: struktur halaman, navigasi, dialog, kontak.
+- `components/studio/ProjectDeck.tsx`: interaksi kartu.
+- `components/studio/SceneViewer.tsx`: viewer 3D on-demand dan fallback.
+- `app/globals.css`: token warna, tipografi, responsivitas, motion.
+- `data/studio.ts`: label editorial dan pengelompokan tampilan.
+- `data/index.ts`: data dari redesign sebelumnya, dipertahankan tanpa perubahan. Ekspor template lama di file ini tidak ditampilkan.
+- `public/editorial/`: salinan WebP ringan dari screenshot proyek asli.
+- `public/recentProject/`: empat aset proyek asli, tetap disertakan.
+- `public/cv/`: CV asli.
+- `public/studio3d/`: render WebP dan model GLB.
+- `design-source/`: file `.blend`, script model/render, master PNG, dan catatan reproduksi.
 
-## Deploy on Vercel
+Lisensi font lokal ada di `public/fonts/LICENSE.txt`. Tidak ada klaim proyek, testimonial, metrik, atau pengalaman baru yang ditambahkan.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Blender
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Model dibuat dengan Blender 4.3.2, bukan gambar stok. Buka `design-source/backend-study.blend`, atau buat ulang:
+
+```bash
+blender -b --python design-source/backend-study.py
+python3 design-source/optimize-renders.py
+```
+
+Script optimisasi memerlukan Pillow. Catatan model lebih lengkap ada di `design-source/README.md`.
+
+## Isi arsip
+
+Paket berisi source aplikasi dan aset yang diperlukan, termasuk source Blender. `node_modules`, `.next`, cache, metadata Git, log render, backup `.blend1`, dan ilustrasi template lama yang tidak digunakan tidak dimasukkan. Dependency lockfile dipertahankan. `CHECKSUMS.sha256` dapat digunakan untuk memeriksa berkas setelah ekstraksi.
+
+Lihat `QA.md` untuk hasil pengujian dan batas verifikasi.
