@@ -32,7 +32,7 @@ jobs:
             git branch -vv
 
             # Build ulang image Docker
-            docker build -t portfolio_rifki .
+            DOCKER_BUILDKIT=0 docker build -t portfolio_rifki .
 
             # Stop & remove container lama kalau ada
             docker stop portfolio_rifki-server || true
