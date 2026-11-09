@@ -1,169 +1,56 @@
 "use client";
-import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 
-import { CanvasRevealEffect } from "./ui/CanvasRevealsEffect";
+import { motion, useReducedMotion } from "motion/react";
+import { Reveal } from "./ui/Reveal";
+
+const phases = [
+  {
+    label: "Phase 1",
+    title: "Discovery & System Design",
+    description: "We align on business goals, user flows, and constraints (traffic, latency, budget). Then I translate them into API contracts, data models, and a clean service architecture.",
+    accent: "#65e8df",
+  },
+  {
+    label: "Phase 2",
+    title: "Implementation & Iteration",
+    description: "I build in small, reliable iterations auth, database schema, and core endpoints while sharing frequent progress updates and adjusting based on feedback.",
+    accent: "#a78bfa",
+  },
+  {
+    label: "Phase 3",
+    title: "Testing, Deploy & Monitoring",
+    description: "Before release: testing (unit/integration), edge-case validation, and security hardening. After deploy: monitoring, logging, and performance tuning for production stability.",
+    accent: "#ffb86b",
+  },
+];
 
 const Approach = () => {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section className="w-full py-10">
-      {/* ===== My Approach ===== */}
-      <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-bold">
-        How I <span className="text-purple">build</span>
-      </h1>
-
-      <div className="my-20 flex flex-col lg:flex-row items-center justify-center w-full gap-4">
-        <Card
-          title="Discovery & System Design"
-          icon={<AceternityIcon order="Phase 1" />}
-          des="We align on business goals, user flows, and constraints (traffic, latency, budget). Then I translate them into API contracts, data models, and a clean service architecture."
-        >
-          <CanvasRevealEffect
-            animationSpeed={5.1}
-            containerClassName="bg-emerald-900 rounded-3xl overflow-hidden"
-          />
-        </Card>
-
-        <Card
-          title="Implementation & Iteration"
-          icon={<AceternityIcon order="Phase 2" />}
-          des="I build in small, reliable iterations auth, database schema, and core endpoints while sharing frequent progress updates and adjusting based on feedback."
-        >
-          <CanvasRevealEffect
-            animationSpeed={3}
-            containerClassName="bg-pink-900 rounded-3xl overflow-hidden"
-            colors={[
-              [255, 166, 158],
-              [221, 255, 247],
-            ]}
-            dotSize={2}
-          />
-        </Card>
-
-        <Card
-          title="Testing, Deploy & Monitoring"
-          icon={<AceternityIcon order="Phase 3" />}
-          des="Before release: testing (unit/integration), edge-case validation, and security hardening. After deploy: monitoring, logging, and performance tuning for production stability."
-        >
-          <CanvasRevealEffect
-            animationSpeed={3}
-            containerClassName="bg-sky-600 rounded-3xl overflow-hidden"
-            colors={[[125, 211, 252]]}
-          />
-        </Card>
+    <section className="py-16 sm:py-24" aria-labelledby="approach-title">
+      <Reveal>
+        <p className="eyebrow">How I work</p>
+        <h2 id="approach-title" className="section-title">A clear path from idea to <em>production.</em></h2>
+      </Reveal>
+      <div className="mt-10 grid gap-4 lg:grid-cols-3">
+        {phases.map((phase, index) => <Reveal key={phase.label} delay={index * 0.1}>
+          <motion.article className="surface group flex h-full min-h-[330px] flex-col justify-between p-6 sm:p-8" whileHover={reduceMotion ? undefined : { y: -5 }} transition={{ duration: reduceMotion ? 0 : 0.25 }}>
+            <div className="relative z-10 flex items-center justify-between">
+              <span className="font-mono text-xs uppercase tracking-[0.16em]" style={{ color: phase.accent }}>{phase.label}</span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-sm text-white/40 transition group-hover:border-white/30 group-hover:text-white">0{index + 1}</span>
+            </div>
+            <div className="relative z-10 mt-12">
+              <h3 className="text-2xl font-semibold leading-tight tracking-[-0.03em] text-white">{phase.title}</h3>
+              <p className="mt-4 text-sm leading-6 text-[#aab5d1]">{phase.description}</p>
+            </div>
+            <div className="relative z-10 mt-8 h-px w-full bg-white/10"><span className="block h-px w-1/3 transition-all duration-500 group-hover:w-full" style={{ backgroundColor: phase.accent }} /></div>
+          </motion.article>
+        </Reveal>)}
       </div>
-
-      <p className="text-center text-white/70 max-w-3xl mx-auto -mt-10">
-        I can ship backend features end-to-end: from API contract → production
-        deploy.
-      </p>
+      <Reveal delay={0.18}><p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-6 text-white/55">I can ship backend features end-to-end: from API contract → production deploy.</p></Reveal>
     </section>
   );
 };
 
 export default Approach;
-
-const Card = ({
-  title,
-  icon,
-  children,
-  des,
-}: {
-  title: string;
-  icon: React.ReactNode;
-  children?: React.ReactNode;
-  des: string;
-}) => {
-  const [hovered, setHovered] = React.useState(false);
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="border border-black/[0.2] group/canvas-card flex items-center justify-center
-      dark:border-white/[0.2] max-w-sm w-full mx-auto p-4 relative lg:h-[35rem] rounded-3xl"
-      style={{
-        background: "rgb(4,7,29)",
-        backgroundColor:
-          "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-      }}
-    >
-      <Icon className="absolute h-10 w-10 -top-3 -left-3 dark:text-white text-black opacity-30" />
-      <Icon className="absolute h-10 w-10 -bottom-3 -left-3 dark:text-white text-black opacity-30" />
-      <Icon className="absolute h-10 w-10 -top-3 -right-3 dark:text-white text-black opacity-30" />
-      <Icon className="absolute h-10 w-10 -bottom-3 -right-3 dark:text-white text-black opacity-30" />
-
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="h-full w-full absolute inset-0"
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="relative z-20 px-10">
-        <div
-          className="text-center group-hover/canvas-card:-translate-y-4 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
-          group-hover/canvas-card:opacity-0 transition duration-200 min-w-40 mx-auto flex items-center justify-center"
-        >
-          {icon}
-        </div>
-
-        <h2
-          className="dark:text-white text-center text-3xl opacity-0 group-hover/canvas-card:opacity-100
-          relative z-10 text-black mt-4 font-bold group-hover/canvas-card:text-white
-          group-hover/canvas-card:-translate-y-2 transition duration-200"
-        >
-          {title}
-        </h2>
-
-        <p
-          className="text-sm opacity-0 group-hover/canvas-card:opacity-100 relative z-10 mt-4
-          group-hover/canvas-card:text-white text-center group-hover/canvas-card:-translate-y-2
-          transition duration-200 whitespace-pre-line"
-          style={{ color: "#E4ECFF" }}
-        >
-          {des}
-        </p>
-      </div>
-    </div>
-  );
-};
-
-const AceternityIcon = ({ order }: { order: string }) => {
-  return (
-    <div>
-      <button className="relative inline-flex overflow-hidden rounded-full p-[1px]">
-        <span
-          className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite]
-          bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]"
-        />
-        <span
-          className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full
-          bg-slate-950 px-5 py-2 text-purple backdrop-blur-3xl font-bold text-2xl"
-        >
-          {order}
-        </span>
-      </button>
-    </div>
-  );
-};
-
-export const Icon = ({ className, ...rest }: any) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      className={className}
-      {...rest}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-    </svg>
-  );
-};

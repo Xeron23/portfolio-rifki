@@ -1,169 +1,74 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { FaLocationArrow } from "react-icons/fa6";
-
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { FaArrowUpRightFromSquare, FaXmark } from "react-icons/fa6";
 import { projects } from "@/data";
-import { PinContainer } from "./ui/Pin";
+import { Reveal } from "./ui/Reveal";
 
-type Project = {
-  id: number;
-  title: string;
-  des: string;
-  img: string;
-  iconLists: string[];
-  link?: string;
-};
+type Project = (typeof projects)[number];
 
 const RecentProjects = () => {
-  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Project | null>(null);
+  const reduceMotion = useReducedMotion();
 
-  const closeModal = () => {
-    setOpen(false);
-    setSelected(null);
-  };
-
-  // Close modal with ESC
   useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeModal();
+    if (!selected) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelected(null);
     };
-    if (open) window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [selected]);
 
   return (
-    <div id="projects" className="py-15">
-      <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-bold">
-        A small selection of{" "}
-        <span className="text-purple">recent projects</span>
-      </h1>
-
-      <div className="flex flex-wrap items-center justify-center p-4 gap-16 mt-10">
-        {projects.map((item: Project) => {
-          const href =
-            item.link && item.link.trim().length > 0
-              ? item.link.startsWith("http")
-                ? item.link
-                : `https://${item.link}`
-              : "#";
-
-          return (
-            <div
-              className="lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center sm:w-96 w-[80vw]"
-              key={item.id}
-            >
-              <PinContainer title={item.link ?? ""} href={href}>
-                <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
-                  <div
-                    className="relative w-full h-full overflow-hidden lg:rounded-3xl"
-                    style={{ backgroundColor: "#13162D" }}
-                  >
-                    <img src="/bg.png" alt="bgimg" />
-                  </div>
-
-                  <img
-                    src={item.img}
-                    alt="cover"
-                    className="z-10 absolute bottom-0"
-                  />
+    <section id="projects" className="scroll-mt-28 py-16 sm:py-24" aria-labelledby="projects-title">
+      <Reveal>
+        <p className="eyebrow">Selected work</p>
+        <h2 id="projects-title" className="section-title">A small selection of <em>recent projects.</em></h2>
+      </Reveal>
+      <div className="mt-10 grid gap-5 md:grid-cols-2">
+        {projects.map((project, index) => (
+          <Reveal key={project.id} delay={index * 0.08}>
+            <motion.article className="surface group h-full p-4 sm:p-5" whileHover={reduceMotion ? undefined : { y: -6 }} transition={{ duration: reduceMotion ? 0 : 0.25 }}>
+              <div className="relative h-56 overflow-hidden rounded-xl border border-white/10 bg-[#0a1020] sm:h-64">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(101,232,223,.18),transparent_34%),linear-gradient(135deg,#121c35,#0b1020)]" />
+                <Image src={project.img} alt={`${project.title} project cover`} fill className="relative z-10 object-contain p-8 transition duration-700 group-hover:scale-105" />
+                <div className="absolute left-4 top-4 z-20 rounded-full border border-white/10 bg-[#090e1c]/75 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-[#65e8df]">0{project.id} / build</div>
+              </div>
+              <div className="relative z-10 px-1 pb-1 pt-6">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-xl font-semibold leading-tight tracking-[-0.02em] text-white sm:text-2xl">{project.title}</h3>
+                  <button type="button" aria-label={`Read more about ${project.title}`} onClick={() => setSelected(project)} className="focus-ring shrink-0 rounded-full border border-white/15 p-2 text-white/60 transition hover:border-[#65e8df]/60 hover:text-[#65e8df]"><FaArrowUpRightFromSquare aria-hidden="true" /></button>
                 </div>
-
-                <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">
-                  {item.title}
-                </h1>
-
-                <p
-                  className="lg:text-xl lg:font-normal font-light text-sm line-clamp-2"
-                  style={{ color: "#BEC1DD", margin: "1vh 0" }}
-                >
-                  {item.des}
-                </p>
-
-                <div className="flex items-center justify-between mt-7 mb-3">
-                  <div className="flex items-center">
-                    {item.iconLists.map((icon, index) => (
-                      <div
-                        key={index}
-                        className="border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center"
-                        style={{
-                          transform: `translateX(-${5 * index + 2}px)`,
-                        }}
-                      >
-                        <img src={icon} alt="icon" className="p-2" />
-                      </div>
-                    ))}
+                <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#aab5d1]">{project.des}</p>
+                <div className="mt-5 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2" aria-label="Technologies used">
+                    {project.iconLists.map((icon) => <span key={icon} className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-black/20"><Image src={icon} alt="" width={20} height={20} /></span>)}
                   </div>
-
-                  {/* READ MORE button (opens modal) */}
-                  <button
-                    type="button"
-                    className="flex justify-center items-center group"
-                    onClick={(e) => {
-                      // biar klik tombol ini nggak ngikut "klik card/link" dari container
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setSelected(item);
-                      setOpen(true);
-                    }}
-                  >
-                    <p className="flex lg:text-xl md:text-xs text-sm text-purple group-hover:underline">
-                      Read more
-                    </p>
-                    <FaLocationArrow className="ms-3" color="#CBACF9" />
-                  </button>
+                  {project.link ? <a href={project.link} target="_blank" rel="noopener noreferrer" className="focus-ring inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#65e8df] transition hover:text-white">Open project <FaArrowUpRightFromSquare aria-hidden="true" /></a> : null}
                 </div>
-              </PinContainer>
-            </div>
-          );
-        })}
+              </div>
+            </motion.article>
+          </Reveal>
+        ))}
       </div>
-
-      {/* MODAL */}
-      {open && selected && (
-        <div
-          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 p-4"
-          onClick={closeModal}
-        >
-          <div
-            className="w-full max-w-xl rounded-2xl border border-white/10 bg-[#13162D] p-6 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4"
-                    style={{ backgroundColor: "#13162D" }}>
-              <h2 className="text-xl md:text-2xl font-bold text-white">
-                {selected.title}
-              </h2>
-
-              <button
-                type="button"
-                className="rounded-md bg-white/10 px-3 py-2 text-white/80 hover:bg-white/15"
-                onClick={closeModal}
-              >
-                Close
-              </button>
+      <AnimatePresence>
+        {selected ? <motion.div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#050712]/85 p-5 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelected(null)}>
+          <motion.div role="dialog" aria-modal="true" aria-labelledby="project-dialog-title" className="surface relative max-h-[90vh] w-full max-w-2xl overflow-y-auto p-6 sm:p-8" initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.98 }} onClick={(event) => event.stopPropagation()}>
+            <button type="button" aria-label="Close project details" onClick={() => setSelected(null)} className="focus-ring absolute right-5 top-5 rounded-full border border-white/10 p-2 text-white/60 hover:text-white"><FaXmark aria-hidden="true" /></button>
+            <p className="eyebrow">Project details</p>
+            <h3 id="project-dialog-title" className="mt-5 pr-10 text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">{selected.title}</h3>
+            <p className="mt-5 leading-7 text-[#b7c1dc]">{selected.des}</p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              {selected.iconLists.map((icon) => <span key={icon} className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/20"><Image src={icon} alt="" width={22} height={22} /></span>)}
+              {selected.link ? <a href={selected.link} target="_blank" rel="noopener noreferrer" className="focus-ring ml-auto inline-flex items-center gap-2 rounded-lg bg-[#65e8df] px-4 py-3 text-sm font-semibold text-[#07131c]">Visit project <FaArrowUpRightFromSquare aria-hidden="true" /></a> : null}
             </div>
-
-            <p className="mt-4 text-white/80 leading-relaxed">
-              {selected.des}
-            </p>
-
-            {/* optional: tech icons preview in modal */}
-            <div className="mt-6 flex items-center flex-wrap gap-2">
-              {selected.iconLists.map((icon, idx) => (
-                <div
-                  key={idx}
-                  className="border border-white/[.12] rounded-full bg-black/40 w-9 h-9 flex justify-center items-center"
-                >
-                  <img src={icon} alt="tech" className="p-2" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+          </motion.div>
+        </motion.div> : null}
+      </AnimatePresence>
+    </section>
   );
 };
 

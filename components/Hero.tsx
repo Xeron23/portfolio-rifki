@@ -1,48 +1,80 @@
-import React from 'react'
-import { cn } from "@/lib/utils";
-import { Spotlight } from './ui/spotlight'
-import { TextGenerateEffect } from './ui/text-generate-effect';
-import MagicButton from './ui/magicButton';
-import { FaLocationArrow } from 'react-icons/fa';
+"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+import { FaArrowDown, FaArrowUpRightFromSquare } from "react-icons/fa6";
+import MagicButton from "./MagicButton";
 
 const Hero = () => {
-    return (
-        <div className='relative pb-20 pt-[8rem] overflow-hidden'>
-            <div>
+  const reduceMotion = useReducedMotion();
 
-                <Spotlight className='-tp-40 -left-10 md:-left-32 md:-top-20 h-screen' fill='white' />
-                <Spotlight className='tp-10 left-full h-[80vh] w-[50vw]' fill='purple' />
-                <Spotlight className='tp-28 left-80 h-[80vh] w-[50vw]' fill='blue' />
-            </div>
-            <div className="h-screen w-full items-center absolute flex justify-center bg-white dark:bg-black-100 dark:bg-grid-white/[0.03] bg-grid-black-100/[0.2] top-0 left-0">
-                {/* <div
-                    className={cn(
-                        "absolute inset-0",
-                        "[background-size:40px_40px]",
-                        "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
-                        "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
-                    )}
-                /> */}
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black-100"></div>
-            </div>
-            <div className='flex justify-center relative my-20 z-10'>
-                    <div className='max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] flex flex-col items-center justify-center'>
-                        <h2 className='uppercase tracking-widest text-xs text-center text-blue-100 max-w-100'>
-                            Building reliable backend systems for modern web apps
-                        </h2>
-                    <TextGenerateEffect className='text-center text-[40px] md:text-5xl lg: text-6xl' words='Backend Engineer focused on clean APIs, secure auth, and scalable architecture.'/>
-
-                    <p className='text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl'>Hi, I&apos;m Rifki, a Backend Developer & Automation Enthusiast</p>
-
-                    <a href="#about">
-                        <MagicButton title='Show my work' icon={<FaLocationArrow/>} position='right' otherClasses='' />
-                    </a>
-                    </div>
-            </div>
+  return (
+    <section className="relative flex min-h-[720px] items-center overflow-hidden pb-24 pt-36 sm:pt-40" aria-labelledby="hero-title">
+      <div className="hero-grid pointer-events-none absolute inset-x-[-20%] top-0 h-[720px] opacity-70" />
+      <motion.div
+        aria-hidden="true"
+        className="absolute -right-24 top-32 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(101,232,223,.32),transparent_66%)] blur-2xl"
+        animate={reduceMotion ? undefined : { y: [0, -18, 0], x: [0, 12, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <div className="relative z-10 grid w-full items-end gap-12 lg:grid-cols-[1.2fr_.8fr]">
+        <div>
+          <p className="eyebrow">Backend engineering · automation</p>
+          <motion.h1
+            id="hero-title"
+            className="mt-7 max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.07em] text-white sm:text-7xl lg:text-[6.3rem]"
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Backend Engineer focused on <span className="text-[#65e8df]">clean APIs</span>, secure auth, and scalable architecture.
+          </motion.h1>
+          <motion.p
+            className="mt-8 max-w-2xl text-base leading-7 text-[#b7c1dc] sm:text-lg"
+            initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Hi, I&apos;m Rifki, a Backend Developer &amp; Automation Enthusiast. I build dependable systems that turn complex workflows into simple, useful products.
+          </motion.p>
+          <div className="mt-9 flex flex-wrap items-center gap-4">
+            <a href="#about" className="focus-ring rounded-xl">
+              <MagicButton title="Show my work" icon={<FaArrowDown />} position="right" />
+            </a>
+            <a
+              href="/cv/CV_Muhammad Rifki Anandita.pdf"
+              download
+              className="focus-ring inline-flex h-12 items-center gap-2 rounded-xl border border-white/15 px-5 text-sm font-semibold text-white/80 transition hover:border-[#65e8df]/60 hover:text-[#65e8df]"
+            >
+              Download CV <FaArrowUpRightFromSquare aria-hidden="true" />
+            </a>
+          </div>
         </div>
+        <div className="surface float-slow hidden min-h-[310px] p-6 lg:block">
+          <div className="relative z-10 flex h-full flex-col justify-between">
+            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
+              <span>System note / 01</span>
+              <span className="text-[#65e8df]">Online</span>
+            </div>
+            <div>
+              <div className="mb-5 flex items-center gap-3">
+                <span className="h-3 w-3 rounded-full bg-[#65e8df] shadow-[0_0_18px_#65e8df]" />
+                <span className="text-sm text-white/60">Ready to ship thoughtful backend systems.</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 font-mono text-[10px] text-white/50">
+                <span className="rounded-lg border border-white/10 bg-black/20 p-3">API<br /><b className="text-white">DESIGN</b></span>
+                <span className="rounded-lg border border-white/10 bg-black/20 p-3">DATA<br /><b className="text-white">MODEL</b></span>
+                <span className="rounded-lg border border-white/10 bg-black/20 p-3">DEPLOY<br /><b className="text-white">MONITOR</b></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute bottom-10 left-0 hidden items-center gap-3 text-xs font-mono uppercase tracking-[0.22em] text-white/30 sm:flex">
+        <span className="h-px w-10 bg-white/20" />
+        Scroll to explore
+      </div>
+    </section>
+  );
+};
 
-
-    )
-}
-
-export default Hero
+export default Hero;

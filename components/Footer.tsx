@@ -1,57 +1,23 @@
-import { FaLocationArrow } from "react-icons/fa6";
-
+import Image from "next/image";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { socialMedia } from "@/data";
 import MagicButton from "./MagicButton";
+import { Reveal } from "./ui/Reveal";
 
 const Footer = () => {
   return (
-    <footer className="w-full pt-20 pb-10" id="contact">
-      {/* background grid */}
-      <div className="w-full absolute left-0 -bottom-72 min-h-96">
-        <img
-          src="/footer-grid.svg"
-          alt="grid"
-          className="w-full h-full opacity-50 "
-        />
-      </div>
-
-      <div className="flex flex-col items-center">
-        <h1 className="heading lg:max-w-[45vw]">
-          Let’s build <span className="text-purple">reliable</span> backend systems.
-        </h1>
-
-        <p className="text-white-200 md:mt-10 my-5 text-center">
-          Need APIs, authentication, database design, or third-party integrations?
-          Send me a message and let’s talk.
-        </p>
-
-        <a
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=kaqyword2304@gmail.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <MagicButton
-            title="Get in touch"
-            icon={<FaLocationArrow />}
-            position="right"
-          />
-        </a>
-
-      </div>
-      <div className="flex mt-16 md:flex-row flex-col justify-center items-center">
-
-        <div className="flex items-center md:gap-3 gap-6">
-          {socialMedia.map((info) => (
-            <a href={info.link} key={info.id} target="_blank" rel="noopener noreferrer">
-
-              <div
-                // key={info.id}
-                className="w-10 h-10 cursor-pointer flex justify-center items-center backdrop-filter backdrop-blur-lg saturate-180 bg-opacity-75 bg-black-200 rounded-lg border border-black-300"
-              >
-                <img src={info.img} alt="icons" width={20} height={20} />
-              </div>
-            </a>
-          ))}
+    <footer id="contact" className="relative overflow-hidden border-t border-white/10 py-20 sm:py-28" aria-labelledby="contact-title">
+      <Image src="/footer-grid.svg" alt="" fill className="pointer-events-none object-cover object-top opacity-20" />
+      <Reveal className="relative z-10 flex flex-col items-center text-center">
+        <p className="eyebrow">Have a project in mind?</p>
+        <h2 id="contact-title" className="mt-6 max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.05em] text-white sm:text-6xl">Let&apos;s build <span className="text-[#65e8df]">reliable</span> backend systems.</h2>
+        <p className="mt-6 max-w-xl text-sm leading-6 text-[#aab5d1] sm:text-base">Need APIs, authentication, database design, or third-party integrations? Send me a message and let&apos;s talk.</p>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kaqyword2304@gmail.com" target="_blank" rel="noopener noreferrer" className="focus-ring mt-8 w-full max-w-[260px] rounded-xl"><MagicButton title="Get in touch" icon={<FaArrowUpRightFromSquare />} position="right" /></a>
+      </Reveal>
+      <div className="relative z-10 mt-16 flex flex-col items-center justify-between gap-5 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row">
+        <span>© {new Date().getFullYear()} Rifki Anandita</span>
+        <div className="flex items-center gap-3">
+          {socialMedia.map((info) => <a key={info.id} href={info.link} target="_blank" rel="noopener noreferrer" aria-label="Open social profile" className="focus-ring flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/20 transition hover:border-[#65e8df]/50"><Image src={info.img} alt="" width={20} height={20} /></a>)}
         </div>
       </div>
     </footer>
