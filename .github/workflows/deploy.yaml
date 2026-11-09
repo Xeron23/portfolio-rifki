@@ -28,16 +28,14 @@ jobs:
             # Ambil kode terbaru
             git pull origin DEV
             git status
-            git remote -v
-            git branch -vv
 
-            # Build image Docker jika perlu (atau gunakan image lokal terupdate)
-            docker build -t portfolio_rifki . || true
+            # Build di host
+            npm ci
+            npm run build
 
-            # Stop & remove container lama kalau ada
+            # Restart container
             docker stop portfolio_rifki-server || true
             docker rm portfolio_rifki-server || true
-            # Run container baru dengan env & expose port
             docker run -d \
               --name portfolio_rifki-server \
               --restart unless-stopped \
